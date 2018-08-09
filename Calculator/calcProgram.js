@@ -1,11 +1,4 @@
 // Input prompts for two numbers and an operator
-var num1 = parseFloat(prompt('Enter a number: '));
-var op = prompt('Enter an operator (enter "**" or "sqrt" for power )');
-if (op != 'sqrt') { 
-  var num2 = parseFloat(prompt('Enter another number'));
-}
-
-// function to perform a mathmatical operation
 function mathOp(num1, op, num2) {
   switch (op) {
     case '+':
@@ -25,56 +18,70 @@ function mathOp(num1, op, num2) {
   }
 }
 
-alert(mathOp(num1, op, num2));
+function userCalculation() {
+  var num1 = parseFloat(prompt('Enter a number: '));
+  var op = prompt('Enter an operator (enter "**" or "sqrt" for power )');
+  if (op != 'sqrt') {
+    var num2 = parseFloat(prompt('Enter another number'));
+  }
+
+   return alert(mathOp(num1, op, num2));
+}
 
 // BMI Calculator
 // Ask user for their preferred unit system
-var user_choice = prompt('Enter (m) for metric system or (i) for imperial');
-if (user_choice == 'm') {
-  var user_height_metres = parseFloat(prompt('Enter your height in meters'));
-  var user_weight_kg = parseFloat(prompt('Enter your weight in kg'));
-}
+function calculateUserBMI() {
 
-else if (user_choice == 'i') {
-  var user_height_ft = parseFloat(prompt('Enter your height in feet: )'));
-  var user_height_inches = parseFloat(prompt('Enter your height in inches: )'));
-  var user_weight_lbs = parseFloat(prompt('Enter your weight in pounds'));
-
-  // convert imperial to metric units for the BMI calculator
-  var user_height_metres = ((user_height_ft) + (user_height_inches/12))*0.3048;
-  var user_weight_kg = user_weight_lbs/2.2;
+  var user_choice = prompt('Enter (m) for metric system or (i) for imperial');
+  if (user_choice == 'm') {
+    var user_height_metres = parseFloat(prompt('Enter your height in meters'));
+    var user_weight_kg = parseFloat(prompt('Enter your weight in kg'));
   }
 
-function BMICalulator(user_height, user_weight) {
-  result = user_weight/user_height;
-  return result/user_height;
-}
+  else if (user_choice == 'i') {
+    var user_height_ft = parseFloat(prompt('Enter your height in feet: )'));
+    var user_height_inches = parseFloat(prompt('Enter your height in inches: )'));
+    var user_weight_lbs = parseFloat(prompt('Enter your weight in pounds'));
 
-alert(BMICalulator(user_height_metres, user_weight_kg));
+    // convert imperial to metric units for the BMI calculator
+    var user_height_metres = ((user_height_ft) + (user_height_inches/12))*0.3048;
+    var user_weight_kg = user_weight_lbs/2.2;
+    }
+
+    return BMICalulator(user_height_metres, user_weight_kg);
+}
 
 // Trip Calculator
-var user_distance = parseFloat(prompt('Enter distance in miles'));
-var user_fuel_efficiency = parseFloat(prompt('Enter your fuel efficiency in mpg'));
-var user_cost_per_gallon = parseFloat(prompt('Enter fuel cost per gallon'));
-var user_speed = parseInt(prompt('Enter average speed'));
+function calculateTripTimeAndDistance() {
+  var user_distance = parseFloat(prompt('Enter distance in miles'));
+  var user_fuel_efficiency = parseFloat(prompt('Enter your fuel efficiency in mpg'));
+  var user_cost_per_gallon = parseFloat(prompt('Enter fuel cost per gallon'));
+  var user_speed = parseInt(prompt('Enter average speed'));
 
-function calculateTime(user_distance, user_speed) {
-  return user_distance/user_speed;
+  var time = calculateTravelTime(user_distance, user_speed);
+
+  // If the user's speed is greater than 60mph
+  // remove 2mpg from their fuel efficiency per 1mph over 60mph
+  if (user_speed > 60) {
+    user_fuel_efficiency -= ((user_speed - 60)*2);
+    if (user_fuel_efficiency < 10)
+      user_fuel_efficiency = 10;
+  }
+
+  var cost = calculateTravelCost(user_cost_per_gallon, user_fuel_efficiency, user_distance);
+
+  alert('Your trip will take ' + cost.toFixed(2) + ' hours and cost £ ' + time.toFixed(2));
 }
 
+function userCalcChoice() {
+  var calcChoice = prompt("Enter (1) for a numerical calculator, (2) for a BMI calculator or (3) for a trip calculator");
 
-// If the user's speed is greater than 60mph
-// remove 2mpg from their fuel efficiency per 1mph over 60mph
-if (user_speed > 60) {
-  user_fuel_efficiency -= ((user_speed - 60)*2);
-  if (user_fuel_efficiency < 10)
-    user_fuel_efficiency = 10;
-
-}
-// ((£/gallon) / (m/gallon)) * miles gives the cost of the trip
-function calculateTravelCost(user_cost_per_gallon, user_fuel_efficiency, user_distance) {
-  return ((user_cost_per_gallon/user_fuel_efficiency)*user_distance);
+  if (calcChoice == '1')
+    userCalculation();
+  else if (calcChoice == '2')
+    calculateUserBMI();
+  else if (calcChoice == '3')
+    calculateTripTimeAndDistance();
 }
 
-
-alert('Your trip will take ' + calculateTime(user_distance, user_speed).toFixed(2) + ' hours and cost £ ' + calculateTravelCost(user_cost_per_gallon, user_fuel_efficiency, user_distance).toFixed(2));
+userCalcChoice();
